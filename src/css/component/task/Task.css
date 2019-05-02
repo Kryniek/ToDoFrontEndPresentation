@@ -1,0 +1,51 @@
+@import url("./MissedDeadlineTaskRow.css");
+@import url("./ReachedDeadlineTaskRow.css");
+@import url("./../../util/fakeSpan.css");
+@media only screen and (min-width: 0px) {
+    .TaskComponent>.row>.col>p, .TaskComponent>.row>.col-3>p, .deleteButton, .editButton {
+        font-size: 0.8rem;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .TaskComponent>.row>.col>p, .TaskComponent>.row>.col-3>p, .deleteButton, .editButton {
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .TaskComponent>.row>.col>p, .TaskComponent>.row>.col-3>p, .deleteButton, .editButton {
+        font-size: 1.2rem;
+    }
+}
+
+.TaskComponent {
+    position: relative;
+}
+
+.TaskComponent>.row {
+    transition: 0.35s ease-out;
+}
+
+.TaskComponent>.row>.col-3>p, .TaskComponent>.row>.col>p {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.TaskComponent>.row>.col>p, .TaskComponent>.row>.col-3>p, .deleteButton, .editButton {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.TaskComponent>.row:hover>.col>p, .TaskComponent>.row:hover>.col-3>p, .deleteButton:hover, .editButton:hover {
+    color: rgb(255, 255, 255);
+}
+
+.TaskComponent>.row:hover {
+    background-color: rgb(0, 174, 255, 0.1);
+}
+
+.deleteButton:hover, .editButton:hover {
+    cursor: pointer;
+}
