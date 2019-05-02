@@ -3,51 +3,82 @@ import Container from 'react-bootstrap/Container'
 
 import '../css/component/ToDo.css';
 
+import { API_URL } from './constant/ApiConstants';
+
 import TaskGridHeader from './TaskGridHeader';
 import Task from './Task';
+import Loading from './util/component/Loading';
+import Error from './util/component/Error';
 
 export default class ToDo extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            tasks: [{
-                id: 1,
-                name: 'Task 1',
-                deadline: '2019-06-01T12:00:00'
-            }, {
-                id: 2,
-                name: 'Task 2',
-                deadline: '2019-05-01T12:00:00'
-            }, {
-                id: 3,
-                name: 'Task 3',
-                deadline: '2019-04-01T12:00:00'
-            }, {
-                id: 4,
-                name: 'Task 4',
-                deadline: '2019-03-01T12:00:00'
-            }]
+            tasks: [],
+            isLoaded: false,
+            error: null
         };
+
+        this.getLoadedView = this.getLoadedView.bind(this);
+    }
+
+    componentDidMount() {
+        fetch(API_URL + '/tasks')
+            .then(response => response.json())
+            .then(result => {
+                this.setState({
+                    isLoaded: true,
+                    tasks: result
+                });
+            }, error => {
+                this.setState({
+                    isLoaded: true,
+                    error: error
+                });
+            });
     }
 
     render() {
+        const {
+            isLoaded,
+            error
+        } = this.state;
+
+        var view = null;
+
+        if (isLoaded) {
+            if (error) {
+                view = <Error />
+            } else {
+                view = this.getLoadedView();
+            }
+        } else {
+            view = <Loading />;
+        }
+
         return (
             <div id="ToDoComponent">
                 <Container>
                     <h1 className="pt-5 pb-5 mb-3 rounded display-4">TODO</h1>
                     <div id="toDoTable" className="p-2 rounded">
-                        <span>
-                            <TaskGridHeader />
-                            {this.state.tasks.map(task => (
-                                <Task key={task.id}
-                                    task={task}
-                                />
-                            ))}
-                        </span>
+                        {view}
                     </div>
                 </Container>
             </div>
+        );
+    }
+
+    getLoadedView() {
+        return (
+            <span>
+                <TaskGridHeader />
+                {this.state.tasks.map(task => (
+                    <Task key={task.id}
+                        task={task}
+                    />
+                ))}
+            </span>
         );
     }
 }
